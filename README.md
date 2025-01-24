@@ -1,4 +1,4 @@
-# 3D GIT CONTRIBUTE
+# 3d git contirbute wall
 3D 类 git 贡献墙组件，基于 SVG / Canvas实现
 
 - 用 2d canvas 绘制立方体。2d技术强行画立方体的绘制都需要数学公式；也可以直接用 webGL 绘制
