@@ -1,4 +1,5 @@
 import { FC, useEffect } from "react";
+import { randC } from "./utils";
 
 export interface CanvasThreeDGitContribProps {
   height: number;
@@ -6,18 +7,6 @@ export interface CanvasThreeDGitContribProps {
 }
 
 export const CANVAS_ID = "canvasThreeDGitContrib";
-
-function randC() {
-  return (
-    "rgb(" +
-    ~~(Math.random() * 255) +
-    "," +
-    ~~(Math.random() * 255) +
-    "," +
-    ~~(Math.random() * 255) +
-    ")"
-  );
-}
 
 const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
   height,
@@ -28,25 +17,27 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
 
     const x = 100;
     const y = 200;
-    const z = 65;
+    const z = 100;
 
+    // 角度
+    const angle = 45;
     const points = [
       [0, 0],
       [x, 0],
       [x, -y],
       [0, -y],
-      [z * Math.cos((45 * Math.PI) / 180), -z * Math.sin((45 * Math.PI) / 180)],
+      [z * Math.cos((angle * Math.PI) / 180), -z * Math.sin((angle * Math.PI) / 180)],
       [
-        z * Math.cos((45 * Math.PI) / 180),
-        -y - z * Math.sin((45 * Math.PI) / 180),
+        z * Math.cos((angle * Math.PI) / 180),
+        -y - z * Math.sin((angle * Math.PI) / 180),
       ],
       [
-        x + z * Math.cos((45 * Math.PI) / 180),
-        -z * Math.sin((45 * Math.PI) / 180),
+        x + z * Math.cos((angle * Math.PI) / 180),
+        -z * Math.sin((angle * Math.PI) / 180),
       ],
       [
-        x + z * Math.cos((45 * Math.PI) / 180),
-        -y - z * Math.sin((45 * Math.PI) / 180),
+        x + z * Math.cos((angle * Math.PI) / 180),
+        -y - z * Math.sin((angle * Math.PI) / 180),
       ],
     ];
     const faces = [
@@ -74,9 +65,6 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
       ctx.fillStyle = randC();
       ctx.fill();
     }
-
-    // ctx.fillStyle = "fillStyle";
-    // ctx.fillRect(0, 0, 100, 100);
   };
 
   useEffect(() => {
