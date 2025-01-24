@@ -7,7 +7,8 @@ export interface CanvasThreeDGitContribProps {
 }
 
 export const CANVAS_ID = "canvasThreeDGitContrib";
-
+const ANGLE = 30;
+const PANEL_WIDTH = 100;
 const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
   height,
   width,
@@ -15,38 +16,26 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
   const draw = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, height, width);
 
-    const x = 100;
-    const y = 200;
-    const z = 100;
+    const panelHeight = 200;
 
-    // 角度
-    const angle = 45;
+    // 以底面中心点为原点，算出的坐标
     const points = [
-      [0, 0],
-      [x, 0],
-      [x, -y],
-      [0, -y],
-      [z * Math.cos((angle * Math.PI) / 180), -z * Math.sin((angle * Math.PI) / 180)],
-      [
-        z * Math.cos((angle * Math.PI) / 180),
-        -y - z * Math.sin((angle * Math.PI) / 180),
-      ],
-      [
-        x + z * Math.cos((angle * Math.PI) / 180),
-        -z * Math.sin((angle * Math.PI) / 180),
-      ],
-      [
-        x + z * Math.cos((angle * Math.PI) / 180),
-        -y - z * Math.sin((angle * Math.PI) / 180),
-      ],
+      // 底面；上点开始；顺时针
+      [0, -PANEL_WIDTH * Math.sin((ANGLE * Math.PI) / 180)],
+      [PANEL_WIDTH * Math.cos((ANGLE * Math.PI) / 180), 0],
+      [0, PANEL_WIDTH * Math.sin((ANGLE * Math.PI) / 180)],
+      [-PANEL_WIDTH * Math.cos((ANGLE * Math.PI) / 180), 0],
+      // 顶面；上点开始；顺时针
+      [0, -panelHeight -PANEL_WIDTH * Math.sin((ANGLE * Math.PI) / 180)],
+      [PANEL_WIDTH * Math.cos((ANGLE * Math.PI) / 180), -panelHeight],
+      [0, -panelHeight + PANEL_WIDTH * Math.sin((ANGLE * Math.PI) / 180)],
+      [-PANEL_WIDTH * Math.cos((ANGLE * Math.PI) / 180), -panelHeight],
     ];
+    // 只需要画三个面；立方体的另外三个面被挡住了
     const faces = [
-      [points[4], points[5], points[7], points[6]], //后
-      [points[0], points[4], points[6], points[1]], //下
-      [points[0], points[3], points[5], points[4]], //左
-      [points[1], points[2], points[7], points[6]], //右
-      [points[2], points[3], points[5], points[7]], //上
-      [points[0], points[3], points[2], points[1]], //前
+      [points[4], points[5],points[6],points[7]], // 顶
+      [points[7], points[6], points[2], points[3]], // 左
+      [points[1], points[2], points[6], points[5]], // 右
     ];
 
     ctx.translate(300, 300);
@@ -61,7 +50,6 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
         }
       }
       ctx.closePath();
-      // ctx.fillStyle = "rgba(255,0,0,0.5)";
       ctx.fillStyle = randC();
       ctx.fill();
     }
