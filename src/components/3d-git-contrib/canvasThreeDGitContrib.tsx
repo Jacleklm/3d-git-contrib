@@ -36,19 +36,21 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
     ctx.clearRect(0, 0, height, width);
     ctx.translate(30, 250);
 
-    let isAnimateEnd = true
+    let isAnimateEnd = true;
 
     for (const data of activityData) {
       ctx.save();
 
       const targetCubielHeight = data.count * 3 + BASE_HEIGHT;
       const currCubielHeight = isAnimate
-        ? (prevPanelHeightMap.get(data.date) || 0) + 1
+        ? // ? (prevPanelHeightMap.get(data.date) || 0) + 1 // 所有柱子等速增长，不好看
+          (prevPanelHeightMap.get(data.date) || BASE_HEIGHT) +
+          targetCubielHeight / 150
         : targetCubielHeight;
 
       if (isAnimate && currCubielHeight < targetCubielHeight) {
-        isAnimateEnd = false
-        prevPanelHeightMap.set(data.date, currCubielHeight)
+        isAnimateEnd = false;
+        prevPanelHeightMap.set(data.date, currCubielHeight);
       }
 
       // 以底面中心点为原点，算出的坐标
@@ -105,7 +107,7 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
     if (isAnimate && !isAnimateEnd) {
       setTimeout(() => {
         draw(ctx, prevPanelHeightMap);
-      }, 10);
+      }, 25);
     }
   };
 

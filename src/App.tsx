@@ -6,10 +6,12 @@ function App() {
       style={{
         display: "flex",
         justifyContent: "center",
-        padding: "30px"
+        padding: "30px",
       }}
     >
-      <ThreeDGitContrib/>
+      <ThreeDGitContrib
+      // isAnimate={true}
+      />
     </div>
   );
 }
