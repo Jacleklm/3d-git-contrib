@@ -15,42 +15,54 @@ const colors = ["rgb(140,197,105)", "rgb(117,165,88)", "rgb(98,138,74)"];
 export const CANVAS_ID = "xVn2iOew6F2Ngf82M0fnSa";
 
 const ANGLE = 30;
-const BASE_HEIGHT = 5;
+const BASE_HEIGHT = 3;
 
 const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
   height,
   width,
   activityData: _activityData,
-  isAnimate
+  isAnimate,
 }) => {
-  const panelWidth = width / 60;
-  const gapWidth = panelWidth / 7;
-  const panelHeight = panelWidth * 3;
+  const cubieWidth = width / 60;
+  const gapWidth = cubieWidth / 7;
 
   const activityData = changeSeq(_activityData);
 
-  const draw = (ctx: CanvasRenderingContext2D, prevPanelHeight: number) => {
+  const draw = (
+    ctx: CanvasRenderingContext2D,
+    prevPanelHeightMap: Map<string, number>
+  ) => {
     ctx.save(); // 保存没被 translate 的状态
     ctx.clearRect(0, 0, height, width);
     ctx.translate(30, 250);
 
+    let isAnimateEnd = true
+
     for (const data of activityData) {
       ctx.save();
 
-      // const currPanelHeight = prevPanelHeight + 1;
-      const currPanelHeight = data.count * 3 + BASE_HEIGHT;
+      const targetCubielHeight = data.count * 3 + BASE_HEIGHT;
+      const currCubielHeight = isAnimate
+        ? (prevPanelHeightMap.get(data.date) || 0) + 1
+        : targetCubielHeight;
+
+      if (isAnimate && currCubielHeight < targetCubielHeight) {
+        isAnimateEnd = false
+        prevPanelHeightMap.set(data.date, currCubielHeight)
+      }
+
       // 以底面中心点为原点，算出的坐标
       const points = [
         // 底面；上点开始；顺时针
-        [0, -panelWidth * Math.sin((ANGLE * Math.PI) / 180)],
-        [panelWidth * Math.cos((ANGLE * Math.PI) / 180), 0],
-        [0, panelWidth * Math.sin((ANGLE * Math.PI) / 180)],
-        [-panelWidth * Math.cos((ANGLE * Math.PI) / 180), 0],
+        [0, -cubieWidth * Math.sin((ANGLE * Math.PI) / 180)],
+        [cubieWidth * Math.cos((ANGLE * Math.PI) / 180), 0],
+        [0, cubieWidth * Math.sin((ANGLE * Math.PI) / 180)],
+        [-cubieWidth * Math.cos((ANGLE * Math.PI) / 180), 0],
         // 顶面；上点开始；顺时针
-        [0, -currPanelHeight - panelWidth * Math.sin((ANGLE * Math.PI) / 180)],
-        [panelWidth * Math.cos((ANGLE * Math.PI) / 180), -currPanelHeight],
-        [0, -currPanelHeight + panelWidth * Math.sin((ANGLE * Math.PI) / 180)],
-        [-panelWidth * Math.cos((ANGLE * Math.PI) / 180), -currPanelHeight],
+        [0, -currCubielHeight - cubieWidth * Math.sin((ANGLE * Math.PI) / 180)],
+        [cubieWidth * Math.cos((ANGLE * Math.PI) / 180), -currCubielHeight],
+        [0, -currCubielHeight + cubieWidth * Math.sin((ANGLE * Math.PI) / 180)],
+        [-cubieWidth * Math.cos((ANGLE * Math.PI) / 180), -currCubielHeight],
       ];
       // 只需要画三个面；立方体的另外三个面被挡住了
       const faces = [
@@ -60,8 +72,8 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
       ];
 
       const dayOfWeek = dayjs(data.date).get("day"); // sunday is 0, monday is 1 ...
-      const row = dayOfWeek * (panelWidth + gapWidth);
-      const col = getWeekIdx(data.date) * (panelWidth + gapWidth);
+      const row = dayOfWeek * (cubieWidth + gapWidth);
+      const col = getWeekIdx(data.date) * (cubieWidth + gapWidth);
 
       const baseX =
         row * Math.cos((ANGLE * Math.PI) / 180) +
@@ -90,20 +102,20 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
     }
 
     ctx.restore(); // 回退到没被 translate 的状态，开始下次循环
-    // if (currPanelHeight < mexPanelHeight) {
-    //   setTimeout(() => {
-    //     draw(ctx, currPanelHeight);
-    //   }, 10);
-    // }
+    if (isAnimate && !isAnimateEnd) {
+      setTimeout(() => {
+        draw(ctx, prevPanelHeightMap);
+      }, 10);
+    }
   };
 
   useEffect(() => {
     const canvas = document.getElementById(CANVAS_ID) as HTMLCanvasElement;
-    canvas.height = height;
-    canvas.width = width;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas?.getContext("2d");
     if (ctx) {
-      draw(ctx, 0);
+      canvas.height = height;
+      canvas.width = width;
+      draw(ctx, new Map());
     }
   }, [height, width]);
 
