@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { changeSeq, FORMAT_STR, getWeekIdx } from "./utils";
+import { changeSeq, getWeekIdx } from "./utils";
 import { ActivityData } from "./interface";
 import dayjs from "dayjs";
 
@@ -7,6 +7,7 @@ export interface CanvasThreeDGitContribProps {
   height: number;
   width: number;
   activityData: ActivityData[];
+  isAnimate?: boolean;
 }
 
 const colors = ["rgb(140,197,105)", "rgb(117,165,88)", "rgb(98,138,74)"];
@@ -14,10 +15,13 @@ const colors = ["rgb(140,197,105)", "rgb(117,165,88)", "rgb(98,138,74)"];
 export const CANVAS_ID = "xVn2iOew6F2Ngf82M0fnSa";
 
 const ANGLE = 30;
+const BASE_HEIGHT = 5;
+
 const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
   height,
   width,
   activityData: _activityData,
+  isAnimate
 }) => {
   const panelWidth = width / 60;
   const gapWidth = panelWidth / 7;
@@ -34,7 +38,7 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
       ctx.save();
 
       // const currPanelHeight = prevPanelHeight + 1;
-      const currPanelHeight = data.count * 3;
+      const currPanelHeight = data.count * 3 + BASE_HEIGHT;
       // 以底面中心点为原点，算出的坐标
       const points = [
         // 底面；上点开始；顺时针

@@ -7,12 +7,14 @@ export interface ThreeDGitContribProps {
   renderer?: "svg" | "canvas";
   height?: number;
   width?: number;
+  isAnimate?: boolean;
 }
 
 const ThreeDGitContrib: FC<ThreeDGitContribProps> = ({
   renderer = "canvas",
   height = 1000,
   width = 1280,
+  isAnimate
 }) => {
   // 获取数据
 
@@ -26,6 +28,7 @@ const ThreeDGitContrib: FC<ThreeDGitContribProps> = ({
           height={height}
           width={width}
           activityData={getMockData()}
+          isAnimate={isAnimate}
         />
       ) : (
         <SvgThreeDGitContrib />
