@@ -11,7 +11,8 @@ export interface CanvasThreeDGitContribProps {
 
 const colors = ["rgb(140,197,105)", "rgb(117,165,88)", "rgb(98,138,74)"];
 
-export const CANVAS_ID = "canvasThreeDGitContrib";
+export const CANVAS_ID = "xVn2iOew6F2Ngf82M0fnSa";
+
 const ANGLE = 30;
 const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
   height,
