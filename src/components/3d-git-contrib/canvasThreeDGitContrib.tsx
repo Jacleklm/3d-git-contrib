@@ -22,9 +22,7 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
   const gapWidth = panelWidth / 7;
   const panelHeight = panelWidth * 3;
 
-  // const activityData = changeSeq([..._activityData.slice(5, 10), ..._activityData.slice(362)]);
   const activityData = changeSeq(_activityData);
-  console.log('activityData',activityData)
 
   const draw = (ctx: CanvasRenderingContext2D, prevPanelHeight: number) => {
     ctx.save(); // 保存没被 translate 的状态
@@ -59,8 +57,6 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
       const dayOfWeek = dayjs(data.date).get("day"); // sunday is 0, monday is 1 ...
       const row = dayOfWeek * (panelWidth + gapWidth);
       const col = getWeekIdx(data.date) * (panelWidth + gapWidth);
-
-      console.log(`date: ${data.date}, row: ${dayOfWeek}, col: ${getWeekIdx(data.date)}`)
 
       const baseX =
         row * Math.cos((ANGLE * Math.PI) / 180) +
@@ -108,7 +104,7 @@ const CanvasThreeDGitContrib: FC<CanvasThreeDGitContribProps> = ({
 
   return (
     <canvas id={CANVAS_ID}>
-      the brower is not support canvas, use svg please
+      the brower is not support canvas, use svg renderer please
     </canvas>
   );
 };

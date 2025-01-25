@@ -27,7 +27,7 @@ export const getMockData = (): ActivityData[] => {
   for (let d = start.clone(); d.isBefore(end); d = d.add(1, "day")) {
     data.push({
       date: d.format(FORMAT_STR),
-      count: Math.floor(Math.random() * 50),
+      count: Math.floor(Math.random() * 30),
       // count: 2,
       level: Math.floor(Math.random() * 6),
     });

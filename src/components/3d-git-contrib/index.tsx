@@ -11,7 +11,7 @@ export interface ThreeDGitContribProps {
 
 const ThreeDGitContrib: FC<ThreeDGitContribProps> = ({
   renderer = "canvas",
-  height = 720,
+  height = 1000,
   width = 1280,
 }) => {
   // 获取数据

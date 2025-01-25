@@ -9,7 +9,7 @@ function App() {
         padding: "30px"
       }}
     >
-      <ThreeDGitContrib height={1500}/>
+      <ThreeDGitContrib/>
     </div>
   );
 }
